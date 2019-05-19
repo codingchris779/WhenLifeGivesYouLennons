@@ -28,7 +28,7 @@ public class TeleOpMongoose extends OpMode {
 
     //Servos//
     private Servo teamMarker;
-    private CRServo collecty;
+    private DcMotor collecty;
     private Servo droppy;
     private Servo droppyJr;
     private TouchSensor limitSwitch;
@@ -65,7 +65,7 @@ public class TeleOpMongoose extends OpMode {
         //Servos//
         teamMarker = hardwareMap.servo.get("teamMarker");
         teamMarker.setPosition(0.2);
-        collecty = hardwareMap.crservo.get("collecty");
+        collecty = hardwareMap.dcMotor.get("collecty");
         droppy = hardwareMap.servo.get("droppy");
         droppyJr = hardwareMap.servo.get("droppyJr");
 
@@ -255,9 +255,9 @@ public class TeleOpMongoose extends OpMode {
         telemetry.addData("Collector: ", collecty.getPower());
 
         //Collection Extension motor// - LeftBumper= Deploy | LeftTrigger= Retract
-        if (gamepad2.left_bumper) {
+        if (gamepad2.left_bumper && extendy.getCurrentPosition()>-2000) {
             extendy.setPower(-1);
-        } else if (gamepad2.left_trigger > 0.5) {
+        } else if (gamepad2.left_trigger > 0.5 && extendy.getCurrentPosition()<0) {
             extendy.setPower(1);
         } else {
             extendy.setPower(0);
